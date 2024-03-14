@@ -83,21 +83,33 @@ const scoMusic = {
         }
     },
     buttonlist: () => {
-        const aplayerList = document.querySelector(".aplayer-list");
-        if (aplayerList) {
-            document.querySelector(".aplayer-lrc").addEventListener("click", () => {
-                if (aplayerList.classList.contains("aplayer-list-hide")) {
-                    aplayerList.classList.remove("aplayer-list-hide");
-                } else {
-                    aplayerList.classList.add("aplayer-list-hide");
-                }
-            });
-        }
+        const anMusicPage = document.getElementById("Music-page");
+        const aplayerIconMenu = anMusicPage.querySelector(".aplayer-info .aplayer-time .aplayer-icon-menu");
+        const menu_mask = document.getElementById("Music-menu-mask");
+
+        menu_mask.addEventListener("click", function anMusicPageMenuAask() {
+            if (!document.querySelector('body[data-type="music"]')) {
+                menu_mask.removeEventListener("click", anMusicPageMenuAask);
+                return;
+            }
+            if (menu_mask) {
+                menu_mask.style.display = "";
+            }
+            anMusicPage.querySelector(".aplayer-list") && anMusicPage.querySelector(".aplayer-list").classList.remove("aplayer-list-hide");
+        });
+
+        aplayerIconMenu.addEventListener("click", function () {
+            if (menu_mask) {
+                menu_mask.style.display = "block";
+                menu_mask.style.animation = "0.5s ease 0s 1 normal none running to_show";
+            }
+        });
     },
     addEventListenerChangeMusicBg: () => {
         const aplayer = document.getElementById("Music-page").querySelector("meting-js").aplayer;
         aplayer.on('loadeddata', () => {
             scoMusic.changeMusicBg();
+            scoMusic.buttonlist();
         });
         aplayer.on('timeupdate', () => {
             scoMusic.lrcupdate();
@@ -148,7 +160,6 @@ const scoMusic = {
         document.documentElement.style.setProperty('--vh', `${vh}px`);
         scoMusic.getCustomPlayList();
         document.addEventListener("keydown", scoMusic.setKeydown);
-        scoMusic.buttonlist();
     }
 };
 
