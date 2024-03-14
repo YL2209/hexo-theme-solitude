@@ -148,3 +148,7 @@ include ../widgets/third-party/pjax.pug
 
 // google adsense
 include ../body/gadsense
+
+//- 弹幕js
+if theme.envelope_comment.enable && theme.envelope_comment.easy_Danmaku_js
+    include ../page/danmu.pug
